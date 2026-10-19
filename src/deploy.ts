@@ -188,7 +188,7 @@ async function installBot(name: string, lang: Lang, entryBefore: string, maxWait
       return { done: true, text: `Installed in ${secs}s` + (moved ? `, main set to ${b.entry}` : '') };
     }
     if (secs >= maxWaitSec) {
-      return { done: false, text: `still installing after ${secs}s. Check host_bot_info / host_logs later, then start the bot.` };
+      return { done: false, text: `still installing after ${secs}s. Check autowork_bot_info / autowork_logs later, then start the bot.` };
     }
   }
 }
@@ -298,7 +298,7 @@ export async function deployBot(opts: DeployOptions): Promise<string> {
     }
     say(`Running (pid ${now.pid})${now.no_output ? ', no output yet' : ''}`);
     if ((lang === 'node' || lang === 'typescript') && now.mem_mb && now.mem_mb < 300) {
-      say(`Warning: RAM cap is only ${now.mem_mb} MB. Node bots often need more. Raise it with host_config mem_mb=300`);
+      say(`Warning: RAM cap is only ${now.mem_mb} MB. Node bots often need more. Raise it with autowork_config mem_mb=300`);
     }
     say(`Done in ${Math.round((Date.now() - t0) / 1000)}s`);
     return lines.join('\n');

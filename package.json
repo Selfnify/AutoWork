@@ -1,11 +1,11 @@
 {
-  "name": "selfnify-host-mcp",
-  "version": "0.1.0",
-  "description": "MCP server that lets Claude deploy and manage bots on the Selfnify host.",
+  "name": "autowork-mcp",
+  "version": "0.2.0",
+  "description": "AutoWork: MCP server that lets Claude deploy and manage bots on the Selfnify host.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "selfnify-host-mcp": "dist/index.js"
+    "autowork-mcp": "dist/index.js"
   },
   "files": [
     "dist",

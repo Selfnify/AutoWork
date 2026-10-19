@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { CONFIG_DIR } from './config.js';
 
-export const LOG_FILE = path.join(CONFIG_DIR, 'mcp.log');
+export const LOG_FILE = path.join(CONFIG_DIR, 'autowork.log');
 const MAX_LOG_BYTES = 2 * 1024 * 1024;
 
 const secrets = new Set<string>();

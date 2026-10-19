@@ -46,14 +46,14 @@ function fmtTable(headers: string[], rows: string[][]): string {
 
 function registerTools(server: McpServer): void {
   server.registerTool(
-    'host_status',
+    'autowork_status',
     {
       title: 'Host status',
       description: 'Show your storage usage and how many bots are running on the Selfnify host.',
       inputSchema: {},
     },
     async () =>
-      handle('host_status', async () => {
+      handle('autowork_status', async () => {
         const s = await api<any>('GET', '/status');
         const quota = s.you.quota_gb === null ? 'no limit' : `${s.you.quota_gb} GB`;
         return [
@@ -65,14 +65,14 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_list_bots',
+    'autowork_list_bots',
     {
       title: 'List bots',
       description: 'List all bots on the host with status, language, RAM use and autostart.',
       inputSchema: {},
     },
     async () =>
-      handle('host_list_bots', async () => {
+      handle('autowork_list_bots', async () => {
         const r = await api<{ bots: Bot[] }>('GET', '/bots');
         if (!r.bots.length) return 'No bots yet.';
         return fmtTable(
@@ -83,14 +83,14 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_bot_info',
+    'autowork_bot_info',
     {
       title: 'Bot info',
       description: 'Show one bot in detail: status, PID, memory, entry file, env var names, and recent output.',
       inputSchema: { name: nameSchema },
     },
     async ({ name }) =>
-      handle('host_bot_info', async () => {
+      handle('autowork_bot_info', async () => {
         const b = await api<Bot>('GET', bp(name));
         const lines = [
           `${b.name}: ${b.status}${b.pid ? ` (pid ${b.pid})` : ''}`,
@@ -110,7 +110,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_bot_action',
+    'autowork_bot_action',
     {
       title: 'Start, stop or restart a bot',
       description: 'Start, stop or restart a bot. Restart stops it and starts it again.',
@@ -120,7 +120,7 @@ function registerTools(server: McpServer): void {
       },
     },
     async ({ name, action }) =>
-      handle('host_bot_action', async () => {
+      handle('autowork_bot_action', async () => {
         if (action === 'restart') {
           try {
             await api('POST', bp(name, '/stop'));
@@ -136,7 +136,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_logs',
+    'autowork_logs',
     {
       title: 'Bot logs',
       description: 'Read the last lines of a bot run log, or its install/build log when kind is "install".',
@@ -147,7 +147,7 @@ function registerTools(server: McpServer): void {
       },
     },
     async ({ name, lines, kind }) =>
-      handle('host_logs', async () => {
+      handle('autowork_logs', async () => {
         const n = lines ?? 50;
         const k = kind ?? 'run';
         const r = await api<{ logs: string }>('GET', bp(name, '/logs') + `?lines=${n}&kind=${k}`);
@@ -156,7 +156,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_set_env',
+    'autowork_set_env',
     {
       title: 'Set env vars',
       description:
@@ -167,7 +167,7 @@ function registerTools(server: McpServer): void {
       },
     },
     async ({ name, vars }) =>
-      handle('host_set_env', async () => {
+      handle('autowork_set_env', async () => {
         if (!Object.keys(vars).length) throw new Error('no variables given');
         const r = await api<{ env_keys: string[] }>('POST', bp(name, '/env'), { body: vars });
         return `Set ${Object.keys(vars).length} var(s) on ${name}. ${r.env_keys.length} on the server now. Restart to apply.`;
@@ -175,7 +175,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_unset_env',
+    'autowork_unset_env',
     {
       title: 'Remove env vars',
       description: 'Remove environment variables from a bot by key name. Restart to apply.',
@@ -185,7 +185,7 @@ function registerTools(server: McpServer): void {
       },
     },
     async ({ name, keys }) =>
-      handle('host_unset_env', async () => {
+      handle('autowork_unset_env', async () => {
         const body: Record<string, null> = {};
         keys.forEach((k) => (body[k] = null));
         const r = await api<{ env_keys: string[] }>('POST', bp(name, '/env'), { body });
@@ -194,7 +194,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_config',
+    'autowork_config',
     {
       title: 'Bot config',
       description: 'Change a bot settings: RAM cap (mem_mb, at least 30), autostart on boot, or the main entry file.',
@@ -206,7 +206,7 @@ function registerTools(server: McpServer): void {
       },
     },
     async ({ name, mem_mb, autostart, entry }) =>
-      handle('host_config', async () => {
+      handle('autowork_config', async () => {
         const body: Record<string, unknown> = {};
         if (autostart !== undefined) body.autostart = autostart;
         if (mem_mb !== undefined) body.mem_mb = mem_mb;
@@ -220,7 +220,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_deploy',
+    'autowork_deploy',
     {
       title: 'Deploy a bot',
       description:
@@ -241,7 +241,7 @@ function registerTools(server: McpServer): void {
       },
     },
     async (args) =>
-      handle('host_deploy', async () => {
+      handle('autowork_deploy', async () => {
         if (args.name && !NAME_RE.test(args.name.toLowerCase())) throw new Error('bad bot name');
         return deployBot({
           path: args.path,
@@ -258,7 +258,7 @@ function registerTools(server: McpServer): void {
   );
 
   server.registerTool(
-    'host_delete',
+    'autowork_delete',
     {
       title: 'Delete a bot',
       description:
@@ -269,12 +269,12 @@ function registerTools(server: McpServer): void {
       },
     },
     async ({ name, pin }) =>
-      handle('host_delete', async () => {
+      handle('autowork_delete', async () => {
         registerSecret(pin);
         if (!hasPinSet()) throw new Error('no PIN set yet. Run `host login` in a terminal first.');
         if (!checkPin(pin)) throw new Error('wrong PIN, nothing was deleted');
         await api('DELETE', bp(name));
-        log('warn', 'host_delete', `deleted bot ${name}`);
+        log('warn', 'autowork_delete', `deleted bot ${name}`);
         return `Deleted ${name} and all its files.`;
       })
   );
@@ -286,10 +286,10 @@ async function main(): Promise<void> {
   process.on('uncaughtException', (err) => log('error', 'process', `uncaught exception: ${err.stack || err.message}`));
   process.on('unhandledRejection', (reason) => log('error', 'process', `unhandled rejection: ${String(reason)}`));
 
-  const server = new McpServer({ name: 'selfnify-host', version: VERSION });
+  const server = new McpServer({ name: 'autowork', version: VERSION });
   registerTools(server);
   await server.connect(new StdioServerTransport());
-  log('info', 'server', `selfnify-host-mcp ${VERSION} started (log: ${LOG_FILE})`);
+  log('info', 'server', `autowork-mcp ${VERSION} started (log: ${LOG_FILE})`);
 }
 
 main().catch((err) => {

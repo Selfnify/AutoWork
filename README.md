@@ -1,6 +1,6 @@
-# selfnify-host-mcp
+# autowork-mcp
 
-An MCP server that lets Claude deploy and manage bots on the Selfnify host: deploy, start, stop, restart, logs, env vars, config, and delete.
+AutoWork is an MCP server that lets Claude deploy and manage bots on the Selfnify host: deploy, start, stop, restart, logs, env vars, config, and delete.
 
 ## Setup
 
@@ -24,7 +24,7 @@ An MCP server that lets Claude deploy and manage bots on the Selfnify host: depl
    ```json
    {
      "mcpServers": {
-       "selfnify-host": {
+       "autowork": {
          "command": "node",
          "args": ["C:\\full\\path\\to\\Selfnify-host-mcp-\\dist\\index.js"]
        }
@@ -35,22 +35,22 @@ An MCP server that lets Claude deploy and manage bots on the Selfnify host: depl
    Restart Claude Desktop afterwards. For Claude Code:
 
    ```
-   claude mcp add selfnify-host -- node /full/path/to/Selfnify-host-mcp-/dist/index.js
+   claude mcp add autowork -- node /full/path/to/Selfnify-host-mcp-/dist/index.js
    ```
 
 ## Tools
 
 | Tool | Description |
 |---|---|
-| `host_status` | Storage use and server load |
-| `host_list_bots` | All bots with status and RAM |
-| `host_bot_info` | One bot in detail |
-| `host_bot_action` | Start, stop or restart a bot |
-| `host_logs` | Run or install logs |
-| `host_set_env` / `host_unset_env` | Manage env vars |
-| `host_config` | RAM cap, autostart, main file |
-| `host_deploy` | Deploy a local folder (with `dry_run` and `no_install` options) |
-| `host_delete` | Delete a bot. Requires the PIN. |
+| `autowork_status` | Storage use and server load |
+| `autowork_list_bots` | All bots with status and RAM |
+| `autowork_bot_info` | One bot in detail |
+| `autowork_bot_action` | Start, stop or restart a bot |
+| `autowork_logs` | Run or install logs |
+| `autowork_set_env` / `autowork_unset_env` | Manage env vars |
+| `autowork_config` | RAM cap, autostart, main file |
+| `autowork_deploy` | Deploy a local folder (with `dry_run` and `no_install` options) |
+| `autowork_delete` | Delete a bot. Requires the PIN. |
 
 Claude also reads `SKILL.md` for the workflow rules.
 
@@ -63,7 +63,7 @@ Claude also reads `SKILL.md` for the workflow rules.
 
 ## Logs
 
-Errors and actions are logged to `~/.selfnify/mcp.log` (rotated at 2 MB). The same lines also go to stderr, which Claude Desktop shows in its MCP logs.
+Errors and actions are logged to `~/.selfnify/autowork.log` (rotated at 2 MB). The same lines also go to stderr, which Claude Desktop shows in its MCP logs.
 
 ## Development
 

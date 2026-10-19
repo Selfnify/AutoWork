@@ -21,7 +21,7 @@ export async function api<T = any>(method: string, apiPath: string, opts: ApiOpt
   const { url, password } = requireLogin();
   const headers: Record<string, string> = {
     Authorization: `Bearer ${password}`,
-    'User-Agent': `selfnify-host-mcp/${VERSION}`,
+    'User-Agent': `autowork-mcp/${VERSION}`,
   };
   let payload: any;
   if (opts.raw) {
