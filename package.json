@@ -1,0 +1,41 @@
+{
+  "name": "selfnify-host-mcp",
+  "version": "0.1.0",
+  "description": "MCP server that lets Claude deploy and manage bots on the Selfnify host.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "selfnify-host-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "SKILL.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "prepare": "tsc"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "selfnify",
+    "bot",
+    "hosting",
+    "discord"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "tar": "^7.5.22",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "typescript": "^5.9.3"
+  }
+}
