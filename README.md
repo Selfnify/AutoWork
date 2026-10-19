@@ -13,8 +13,8 @@ AutoWork is an MCP server that lets Claude deploy and manage bots on the Selfnif
 2. Install and build:
 
    ```
-   git clone https://github.com/Selfnify/Selfnify-host-mcp-.git
-   cd Selfnify-host-mcp-
+   git clone https://github.com/Selfnify/AutoWork.git
+   cd AutoWork
    npm install
    npm run build
    ```
@@ -26,7 +26,7 @@ AutoWork is an MCP server that lets Claude deploy and manage bots on the Selfnif
      "mcpServers": {
        "autowork": {
          "command": "node",
-         "args": ["C:\\full\\path\\to\\Selfnify-host-mcp-\\dist\\index.js"]
+         "args": ["C:\\full\\path\\to\\AutoWork\\dist\\index.js"]
        }
      }
    }
@@ -35,7 +35,7 @@ AutoWork is an MCP server that lets Claude deploy and manage bots on the Selfnif
    Restart Claude Desktop afterwards. For Claude Code:
 
    ```
-   claude mcp add autowork -- node /full/path/to/Selfnify-host-mcp-/dist/index.js
+   claude mcp add autowork -- node /full/path/to/AutoWork/dist/index.js
    ```
 
 ## Tools
