@@ -4,6 +4,14 @@ AutoWork is an MCP server that lets Claude deploy and manage bots on the Selfnif
 
 > **Heads up:** AutoWork lets Claude deploy, restart, change env vars and delete bots on your Selfnify host. Read what Claude plans to do before you approve a tool call, especially deletes. Deletes ask for your PIN and cannot be undone.
 
+## Get access first
+
+You can't create an account on your own. To get a signup token, join the Selfnify Discord server:
+
+**https://discord.gg/wHc9Jhq9sg**
+
+The token is what lets you create an account on the Selfnify host. Without one you can't log in, so ask in the server if you don't have it yet.
+
 ## Setup
 
 1. Log in once with the Selfnify CLI. This stores your password and PIN in `~/.selfnify/host.json`. The MCP server reuses that login, so it never asks for your password.
