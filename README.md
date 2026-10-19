@@ -2,6 +2,8 @@
 
 AutoWork is an MCP server that lets Claude deploy and manage bots on the Selfnify host: deploy, start, stop, restart, logs, env vars, config, and delete.
 
+> **Heads up:** AutoWork lets Claude deploy, restart, change env vars and delete bots on your Selfnify host. Read what Claude plans to do before you approve a tool call, especially deletes. Deletes ask for your PIN and cannot be undone.
+
 ## Setup
 
 1. Log in once with the Selfnify CLI. This stores your password and PIN in `~/.selfnify/host.json`. The MCP server reuses that login, so it never asks for your password.
@@ -73,3 +75,7 @@ npm run build
 ```
 
 Requires Node.js 18 or newer.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
