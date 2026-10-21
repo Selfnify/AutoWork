@@ -1,6 +1,6 @@
 {
   "name": "autowork-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "AutoWork: MCP server that lets Claude deploy and manage bots on the Selfnify host.",
   "type": "module",
   "main": "dist/index.js",
