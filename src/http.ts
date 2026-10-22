@@ -21,6 +21,7 @@ export function startHttp(makeServer: () => McpServer, host: string, port: numbe
       res.writeHead(401, { 'WWW-Authenticate': 'Bearer' }).end('unauthorized');
       return;
     }
+    log('info', 'http', `header names: ${Object.keys(req.headers).filter((k) => k !== 'authorization').join(', ')}`);
     if (req.method !== 'POST') {
       res.writeHead(405, { Allow: 'POST' }).end();
       return;
