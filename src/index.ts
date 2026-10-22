@@ -2,6 +2,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
+import { startHttp } from './http.js';
 import { api, bp, HostError } from './api.js';
 import { checkPin, hasPinSet, loadConfig, requireLogin } from './config.js';
 import { deployBot, Bot, NAME_RE } from './deploy.js';
@@ -308,9 +309,24 @@ async function main(): Promise<void> {
   process.on('uncaughtException', (err) => log('error', 'process', `uncaught exception: ${err.stack || err.message}`));
   process.on('unhandledRejection', (reason) => log('error', 'process', `unhandled rejection: ${String(reason)}`));
 
-  const server = new McpServer({ name: 'autowork', version: VERSION });
-  registerTools(server);
-  await server.connect(new StdioServerTransport());
+  const makeServer = (): McpServer => {
+    const s = new McpServer({ name: 'autowork', version: VERSION });
+    registerTools(s);
+    return s;
+  };
+
+  if (process.argv.includes('--http')) {
+    const token = process.env.AUTOWORK_TOKEN || '';
+    if (token.length < 32) throw new Error('AUTOWORK_TOKEN must be set to at least 32 characters');
+    registerSecret(token);
+    const host = process.env.AUTOWORK_HOST || '127.0.0.1';
+    const port = Number(process.env.AUTOWORK_PORT || 8766);
+    startHttp(makeServer, host, port, token);
+    log('info', 'server', `autowork-mcp ${VERSION} started in http mode`);
+    return;
+  }
+
+  await makeServer().connect(new StdioServerTransport());
   log('info', 'server', `autowork-mcp ${VERSION} started (log: ${LOG_FILE})`);
 }
 
