@@ -29,7 +29,7 @@ export function loadConfig(): HostConfig {
 export function requireLogin(): { url: string; password: string } {
   const cfg = loadConfig();
   if (!cfg.password) {
-    throw new Error('not logged in. Run `host login` once in a terminal first.');
+    throw new Error('not logged in. Ask the owner for an invite link, then run in a terminal: host <invite link> token');
   }
   return { url: (cfg.url || DEFAULT_URL).replace(/\/+$/, ''), password: cfg.password };
 }
