@@ -14,39 +14,28 @@ The token is what lets you create an account on the Selfnify host. Without one y
 
 ## Setup
 
-1. Log in once with the Selfnify CLI. This stores your password and PIN in `~/.selfnify/host.json`. The MCP server reuses that login, so it never asks for your password.
+1. Get an invite link from the owner. Then run it in a terminal, and paste your account token when asked:
 
    ```
-   host login
+   host <invite link> token
    ```
 
-2. Install and build:
-
-   ```
-   git clone https://github.com/Selfnify/AutoWork.git
-   cd AutoWork
-   npm install
-   npm run build
-   ```
-
-3. Add it to Claude. For Claude Desktop, edit `claude_desktop_config.json` and add:
+2. Open Claude Desktop settings, then Developer, then Edit Config, and add:
 
    ```json
    {
      "mcpServers": {
        "autowork": {
-         "command": "node",
-         "args": ["C:\\full\\path\\to\\AutoWork\\dist\\index.js"]
+         "command": "npx",
+         "args": ["-y", "autowork-mcp"]
        }
      }
    }
    ```
 
-   Restart Claude Desktop afterwards. For Claude Code:
+3. Fully quit and reopen Claude Desktop.
 
-   ```
-   claude mcp add autowork -- node /full/path/to/AutoWork/dist/index.js
-   ```
+AutoWork runs on your own PC and uses the login saved by `host`. It never listens on the network.
 
 ## Tools
 
