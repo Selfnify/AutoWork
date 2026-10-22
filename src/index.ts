@@ -4,7 +4,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { startHttp } from './http.js';
 import { api, bp, HostError } from './api.js';
-import { checkPin, hasPinSet, loadConfig } from './config.js';
+import { checkPin, hasPinSet, loadConfig, requireLogin } from './config.js';
 import { deployBot, Bot, NAME_RE } from './deploy.js';
 import { log, LOG_FILE, registerSecret } from './logger.js';
 import { VERSION } from './version.js';
@@ -255,6 +255,28 @@ function registerTools(server: McpServer): void {
           dryRun: args.dry_run,
           noInstall: args.no_install,
         });
+      })
+  );
+
+  server.registerTool(
+    'autowork_create_invite',
+    {
+      title: 'Create invite link',
+      description:
+        'Create a one-time invite link for an existing account. Send the link privately to the user. They run: host <link> token, then paste their account token. The link works once and expires.',
+      inputSchema: {
+        name: nameSchema.describe('Account name the invite is for (the account must already exist)'),
+        hours: z.number().int().min(1).max(168).optional().describe('How long the link stays valid (default 72)'),
+      },
+    },
+    async ({ name, hours }) =>
+      handle('autowork_create_invite', async () => {
+        const r = await api<{ invite: string; valid_hours: number }>('POST', '/invites', {
+          body: { name, hours: hours ?? 72 },
+        });
+        const base = requireLogin().url;
+        const link = `${base}/join/${r.invite}`;
+        return `Invite for ${name} (valid ${r.valid_hours} h, works once):\n${link}\n\nThe user runs: host ${link} token`;
       })
   );
 
